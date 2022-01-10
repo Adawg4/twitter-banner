@@ -30,8 +30,8 @@ async function get_followers() {
       ).then(() => {
         const follower_avatar = {
           input: `${follower.screen_name}.png`,
-          top: 380,
-          left: parseInt(`${1050 + 120 * index}`),
+          top: 760,
+          left: parseInt(`${1050 + 240 * index}`),
         };
         image_data.push(follower_avatar);
         count++;
@@ -53,11 +53,11 @@ async function process_image(url, image_path) {
     (response) =>
       new Promise(async (resolve, reject) => {
         const rounded_corners = new Buffer.from(
-          '<svg><rect x="0" y="0" width="100" height="100" rx="50" ry="50"/></svg>'
+          '<svg><rect x="0" y="0" width="200" height="200" rx="50" ry="50"/></svg>'
         );
         resolve(
           sharp(response.data)
-            .resize(100, 100)
+            .resize(200, 200)
             .composite([
               {
                 input: rounded_corners,
@@ -98,7 +98,7 @@ async function draw_image(image_data) {
     const welcomeTypes = ["Morning", "Afternoon", "Evening"];
     let welcomeText = "";
 
-    if (hour < 12) welcomeText = welcomeTypes[0];
+    /*if (hour < 12) welcomeText = welcomeTypes[0];
     else if (hour < 18) welcomeText = welcomeTypes[1];
     else welcomeText = welcomeTypes[2];
 
@@ -108,7 +108,7 @@ async function draw_image(image_data) {
       input: svg_greeting,
       top: 52,
       left: 220,
-    });
+    });*/
 
     await sharp("twitter-banner.png")
       .composite(image_data)
@@ -155,7 +155,6 @@ get_followers();
 setInterval(() => {
   get_followers();
 }, 60000);
-
 http
   .createServer(function (req, res) {
     res.send("it is running\n");
