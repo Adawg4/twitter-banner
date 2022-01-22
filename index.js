@@ -6,6 +6,9 @@ const sharp = require("sharp");
 const fs = require("fs");
 // to bypass heroku port issue
 const http = require("http");
+var express = require('express'); 
+var app     = express();
+
 
 const twitterClient = new TwitterClient({
   apiKey: process.env.API_KEY,
@@ -155,8 +158,12 @@ get_followers();
 setInterval(() => {
   get_followers();
 }, 60000);
-http
-  .createServer(function (req, res) {
-    res.send("it is running\n");
-  })
-  .listen(process.env.PORT || 5000);
+
+//http.createServer(function (req, res) {res.send("it is running\n");}).listen(process.env.PORT || 5000);
+//var server  = app.listen(process.env.PORT || 5000);
+// start the server listening for requests
+app.listen(process.env.PORT || 5000, () => console.log("Server is running..."));
+
+app.get('/', function(request, response) {   
+    response.send('it is running!');
+});
